@@ -11,4 +11,4 @@ __pycache__/
 .qa/
 
 # Local Indonesian translations, in every directory.
-*_Indonesian.md
+#*_Indonesian.md
