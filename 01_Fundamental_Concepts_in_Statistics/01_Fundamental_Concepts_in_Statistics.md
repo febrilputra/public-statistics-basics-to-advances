@@ -60,6 +60,33 @@ Variance has squared units; standard deviation returns to the original units. Ne
 
 ![Mass deviations and the effect of an unusual observation](figure/center_spread.png)
 
+### Population parameters versus sample statistics: reference table
+
+A **parameter** summarizes the population we want to understand. A **statistic** is calculated from a sample; when used to estimate a population parameter, its calculation rule is an **estimator**, and its observed numerical value is an **estimate**.
+
+For this table, write the finite population values as $y_1,\ldots,y_N$ and the sample values as $x_1,\ldots,x_n$. The different letters distinguish the two sets; earlier formulas used $x_i$ for either set depending on the context. Let $K$ be the number of population units meeting a specified condition, and $k$ the corresponding count in the sample. For example, the condition could be “the notebook has at least one torn page.” Write $\mathbf y=(y_1,\ldots,y_N)$ and $\mathbf x=(x_1,\ldots,x_n)$. The notation $Q(\mathbf z,\tau)$ means the quantile of values $\mathbf z$ at probability level $0<\tau<1$, using a stated quantile convention.
+
+| Aspect | Population parameter / quantity | Sample statistic / estimate |
+|---|---|---|
+| Describes | The entire defined population | The observed sample; may be used to estimate a population feature |
+| Availability | Often unknown unless the entire population is observed | Calculated from observed sample data |
+| Variation | Fixed for a defined population | Can change from sample to sample |
+| Size | $N$: number of population units | $n$: number of sampled units |
+| Mean | $\mu=\frac{\sum_{j=1}^{N}y_j}{N}$ | $\bar x=\frac{\sum_{i=1}^{n}x_i}{n}$ estimates $\mu$ |
+| Variance | $\sigma_{\mathrm{finite}}^2=\frac{\sum_{j=1}^{N}(y_j-\mu)^2}{N}$ | $s^2=\frac{\sum_{i=1}^{n}(x_i-\bar x)^2}{n-1}$ for $n>1$; see the variance conventions below |
+| Standard deviation | $\sigma_{\mathrm{finite}}=\sqrt{\frac{\sum_{j=1}^{N}(y_j-\mu)^2}{N}}$ | $s=\sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar x)^2}{n-1}}$ for $n>1$; usual sample estimate of population SD |
+| Proportion | $p=\frac{K}{N}$ | $\hat p=\frac{k}{n}$ estimates $p$ |
+| Minimum | $y_{\min}=\min(y_1,\ldots,y_N)$ | $x_{\min}=\min(x_1,\ldots,x_n)$; may miss the population minimum |
+| Maximum | $y_{\max}=\max(y_1,\ldots,y_N)$ | $x_{\max}=\max(x_1,\ldots,x_n)$; may miss the population maximum |
+| Quantile at level $\tau$ | $q_\tau=Q(\mathbf y,\tau)$ | $\hat q_\tau=Q(\mathbf x,\tau)$ estimates $q_\tau$ |
+| First quartile (25%) | $Q_{1,\mathrm{pop}}=Q(\mathbf y,0.25)$ | $Q_{1,\mathrm{sample}}=Q(\mathbf x,0.25)$ estimates $Q_{1,\mathrm{pop}}$ |
+| Median (50%) | $Q_{2,\mathrm{pop}}=Q(\mathbf y,0.50)$ | $Q_{2,\mathrm{sample}}=Q(\mathbf x,0.50)$ estimates $Q_{2,\mathrm{pop}}$ |
+| Third quartile (75%) | $Q_{3,\mathrm{pop}}=Q(\mathbf y,0.75)$ | $Q_{3,\mathrm{sample}}=Q(\mathbf x,0.75)$ estimates $Q_{3,\mathrm{pop}}$ |
+
+**Variance conventions matter.** The population column describes a finite list using denominator $N$. For iid observations from an ongoing process, $s^2$ is unbiased for that process's variance $\sigma^2$, as derived next. For simple random sampling without replacement from the finite list, $s^2$ is instead unbiased for $S^2=\sum_{j=1}^{N}(y_j-\mu)^2/(N-1)$; consequently, $\frac{N-1}{N}s^2$ is unbiased for $\sigma_{\mathrm{finite}}^2$. The standard deviation $s$ is generally not unbiased for the population SD, even when $s^2$ is unbiased for the corresponding variance.
+
+**An estimate is not a guarantee.** For a sample drawn from this finite population, $x_{\min}\ge y_{\min}$ and $x_{\max}\le y_{\max}$: unobserved units can extend the range. Sample extremes are generally biased estimators of population extremes. Means, proportions, and quantiles also need an appropriate sampling design to support inference about the target population. For quantiles, state the interpolation convention; use one that gives the usual average of the two middle values for the median when the number of observations is even.
+
 <!-- lab: summaries -->
 
 ## 4. Why $n-1$? A derivation, not a rule to memorize
