@@ -17,7 +17,34 @@ flowchart TD
 
 Suppose we measure the mass of notebooks packed by a small stationery workshop. The observational unit is one notebook, the numerical variable is mass in grams, and the target population might be all notebooks made by the workshop this week. “All notebooks everywhere” is a different population and is not represented merely by collecting more measurements at one workshop.
 
-A variable can be **categorical** (cover color, with no numerical spacing), **ordinal** (a quality rating whose order is meaningful), or **quantitative**. Quantitative variables can be **discrete**, such as the number of torn pages, or **continuous**, such as underlying mass. A rounded mass measurement remains a measurement of a continuous quantity. Numerical labels such as product codes are not quantities to average.
+### Data and variables: a classification tree
+
+A **variable** is a characteristic recorded for each observational unit, such as a notebook's cover color or mass. **Data** are the observed values of those variables: for example, “blue” for cover color and “96 grams” for mass. In a typical data table, each row represents one unit and each column represents one variable.
+
+Variables fall into two broad groups: **categorical** variables describe labels or groups, while **quantitative (numeric)** variables describe counts or measurements. Categorical variables include **nominal** and **ordinal** variables; quantitative variables include **discrete** and **continuous** variables.
+
+```mermaid
+flowchart TD
+    V["Data / variables"] --> C["Categorical: labels or groups"]
+    V --> Q["Quantitative: counts or measurements"]
+    C --> N["Nominal: no natural order<br/>ABO blood group: A, B, AB, O"]
+    C --> O["Ordinal: meaningful order<br/>Service priority: Standard → Priority → Urgent"]
+    Q --> D["Discrete: separate, countable values<br/>Number of damaged items: 0, 1, 2, 3, ..."]
+    Q --> T["Continuous: values within an interval<br/>Delivery time: 2.5 hours, 3.72 hours"]
+```
+
+| Variable type | Meaning | Example | What the values let us say |
+|---|---|---|---|
+| **Nominal (categorical)** | Categories with no natural ranking or numerical distance | ABO blood group: A, B, AB, O; notebook cover color: blue, red, green | We can compare category membership and count frequencies. Blood group A is not “higher” than B, and subtracting their labels has no meaning. |
+| **Ordinal (categorical)** | Categories with a meaningful order, but no implied equal spacing | Service levels defined in increasing urgency: Standard → Priority → Urgent | Urgent ranks above Priority, but the step from Standard to Priority need not equal the step from Priority to Urgent. |
+| **Discrete (quantitative)** | Numerical values from a finite or countable set | Number of damaged items in a package: 0, 1, 2, 3, ... | A package can contain 2 or 3 damaged items, but not 2.5 damaged items. Differences in counts are meaningful. |
+| **Continuous (quantitative)** | A measurement modeled as able to take any value within an interval | Delivery time: 2.5 or 3.72 hours; notebook mass in grams | Intermediate values such as 2.51 hours are possible. Numerical differences describe amounts of time or mass. |
+
+**Order does not imply equal spacing.** Coding Standard, Priority, and Urgent as 1, 2, and 3 preserves their order, but does not establish that Urgent is three times as urgent as Standard or that the two steps are equally large. Likewise, numerical product codes remain nominal labels; their average does not describe a meaningful product characteristic.
+
+**Recorded precision does not determine the underlying variable type.** A delivery duration remains a continuous measurement even when rounded to whole minutes. Its recorded precision depends on the measuring instrument, the recording procedure, and rounding. By contrast, a count of damaged items is discrete because only separate count values are possible. A sample's average count can still be fractional: packages with 2 and 3 damaged items have an average of 2.5 damaged items per package.
+
+**The same setting can contain several variable types.** For one delivery, the delivery company's name is nominal, its priority category is ordinal, its number of damaged items is discrete, and its elapsed delivery time is continuous. Classify the particular characteristic being recorded.
 
 Dependence matters too. Measuring the same notebook ten times gives information about instrument repeatability, but not ten independent notebooks' worth of information about production variability. Always count the units relevant to the question.
 
