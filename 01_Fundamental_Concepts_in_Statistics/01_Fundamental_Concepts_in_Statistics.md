@@ -174,9 +174,47 @@ The familiar statement “about 95% of observations lie within two SDs of the me
 
 1. Mean and median are 10 cm. Squared deviations sum to 8, so $s^2=8/3\approx2.667\text{ cm}^2$, $s\approx1.633$ cm, and estimated SE is $1.633/2\approx0.816$ cm.
 2. Variance is multiplied by $10^2=100$; SD is multiplied by 10. Adding a constant instead would change the mean but leave variance and SD unchanged.
+
+   These are **two different operations**. Multiplying every value by 10 makes its variance 100 times as large and its SD 10 times as large. Adding 10 to every value shifts the mean by 10 but leaves the variance and SD unchanged. Here, $10^2$ means “10 squared,” or $10\times10=100$, not the number 102.
+
+   For a simple example, use the values 1, 2, and 3 and calculate **sample variance with denominator $n-1$**:
+
+   | Operation | Data | Mean | Sample variance | Sample SD |
+   |---|---|---:|---:|---:|
+   | Original | 1, 2, 3 | 2 | 1 | 1 |
+   | Add 10 to each value | 11, 12, 13 | 12 | 1 | 1 |
+   | Multiply each value by 10 | 10, 20, 30 | 20 | 100 | 10 |
+
+   **Why does adding leave the spread unchanged?** Variance and SD measure distances from the mean. Adding 10 moves both the observations and their mean by 10. The original deviations are $1-2,\;2-2,\;3-2$, giving $-1,0,1$. After adding 10, the deviations are $11-12,\;12-12,\;13-12$, still giving $-1,0,1$. Their squared deviations, variance, and SD therefore stay the same.
+
+   **Multiplying stretches the distances.** After multiplying by 10, the mean is 20 and the deviations become $-10,0,10$. Each deviation is 10 times as large, so each squared deviation is $10^2=100$ times as large. The sample variance becomes $(100+0+100)/(3-1)=100$, and the SD becomes $\sqrt{100}=10$.
+
+   For the cable example, converting centimeters to millimeters multiplies the numerical lengths and SD by 10, and the numerical variance by 100. This reflects the change of units; the cables' physical lengths and physical variation have not changed.
+
 3. The single observation equals its sample mean. There is no remaining deviation with which to estimate variability, and the denominator is zero.
 4. No. Repeated measurements within a device are dependent for that question. A design or model must distinguish between-device variation from within-device measurement noise.
 5. $(9/10)25=22.5$. This is an expectation over repetitions, not a claim that every estimated variance is 22.5.
+
+   **What is being estimated?** The process has a true variance of $\sigma^2=25$. Assume we draw $n=10$ independent observations from that same normal process. The question asks about the estimator that calculates squared deviations from the **sample mean** and divides their sum by **$n$**:
+
+   $$v_n=\frac{1}{n}\sum_{i=1}^{n}(X_i-\bar X)^2.$$
+
+   Each new sample has its own mean $\bar X$ and its own variance estimate $v_n$. The process variance stays at 25, but the estimate changes with the observations drawn.
+
+   **Where does $9/10$ come from?** Section 4 shows that the expected sum of squared deviations from the sample mean is $(n-1)\sigma^2$. The sample mean is fitted to the same data, which makes these squared deviations smaller on average than deviations from the true process mean. Dividing by $n$ gives
+
+   $$E[v_n]=\frac{n-1}{n}\sigma^2
+   =\frac{10-1}{10}\times25
+   =\frac{9}{10}\times25
+   =22.5.$$
+
+   Here, $E[v_n]$ means the **expected value**, or the average of the estimator over its sampling distribution. Numerically, the expected sum of squared deviations is $9\times25=225$, and dividing by 10 gives $225/10=22.5$. We can calculate this expectation without knowing the values in any particular sample.
+
+   **Imagine repeating the study.** Draw 10 observations, calculate their sample mean, and calculate one variance estimate using denominator 10. Then draw a fresh group of 10 and repeat the calculation. If we do this independently many times, the average of the resulting variance estimates tends toward 22.5. A finite run of repetitions will generally not average to exactly 22.5, and individual estimates can be below or above 22.5, or even above the true variance of 25.
+
+   **The estimator is biased downward on average.** Its bias is $E[v_n]-\sigma^2=22.5-25=-2.5$, so its expected value is 10% below the true variance. This does not mean that every sample's estimate is exactly 10% too low. Repeating the study more often reveals the average behavior; it does not remove the bias while each sample still has only 10 observations.
+
+   If we instead divide the same squared-deviation sum by $n-1=9$, we obtain the usual sample variance $s^2$. Its expected value is $225/9=25$, so it is unbiased under these assumptions. Individual values of $s^2$ still vary from sample to sample; unbiasedness does not make every estimate equal to 25.
 
 <!-- lab: practice -->
 
