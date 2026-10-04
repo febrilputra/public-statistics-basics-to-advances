@@ -1,3 +1,14 @@
 # Keep source material local; expose only this book's original Markdown notes.
 sources/
 plan/
+
+# Reproducible notebooks: keep outputs, ignore local execution machinery.
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.jupyter/
+.qa/
+
+# Local Indonesian translations, in every directory.
+*_Indonesian.md
