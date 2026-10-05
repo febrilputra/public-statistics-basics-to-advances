@@ -211,24 +211,78 @@ Di sini $\Gamma$ pada rata-rata Weibull adalah fungsi gamma, yang memperluas fak
 
 ## 7. Probabilitas dibandingkan likelihood: apa yang ditetapkan?
 
-Perhitungan probabilitas menetapkan parameter model dan memvariasikan data yang mungkin. **Likelihood** menetapkan data yang diamati dan memvariasikan kandidat nilai parameter. Untuk pengamatan independen,
+Probabilitas dan likelihood menggunakan **rumus yang sama**, $f(x\mid\theta)$, tetapi membacanya dari arah yang berlawanan. Perhitungan **probabilitas** menetapkan parameter model $\theta$ dan menanyakan data yang mungkin muncul. **Likelihood** menetapkan data yang diamati dan membandingkan kandidat nilai parameter.
+
+| | Probabilitas | Likelihood |
+|---|---|---|
+| Yang ditetapkan | Parameter $\theta$ | Data yang diamati $x_1,\ldots,x_n$ |
+| Yang divariasikan | Nilai data yang mungkin | Kandidat nilai parameter |
+| Pertanyaan | “Jika $\theta$ benar, seberapa mungkin hasil-hasil ini?” | “Berdasarkan data ini, seberapa baik setiap $\theta$ menjelaskannya?” |
+| Berjumlah satu atas | Semua data yang mungkin | Tidak harus atas $\theta$ |
+
+**Definisi.** Untuk pengamatan independen, **likelihood** dari $\theta$ adalah hasil kali nilai kepadatan (atau, untuk data diskret, massa) pada setiap pengamatan. **Log-likelihood** adalah logaritma naturalnya:
 
 $$L(\theta;x_1,\ldots,x_n)=\prod_{i=1}^n f(x_i\mid\theta),\qquad
-\ell(\theta)=\log L(\theta)=\sum_{i=1}^n\log f(x_i\mid\theta).$$
+\ell(\theta)=\ln L(\theta)=\sum_{i=1}^n\ln f(x_i\mid\theta).$$
 
-Untuk data diskret, gunakan massa probabilitas sebagai pengganti kepadatan. Perkalian muncul dari independensi. **Jumlah tinggi kepadatan bukan likelihood bersama** pengamatan independen. Menjumlahkan log kepadatan benar karena $\log(ab)=\log a+\log b$. Log-likelihood juga menghindari underflow numerik ketika mengalikan banyak nilai kecil.
+Dalam statistika, “log” tanpa basis berarti **logaritma natural** $\ln$, dengan basis $e\approx2{,}718$. NumPy mengikuti konvensi yang sama: `np.log` adalah $\ln$, sedangkan `np.log10` berbasis 10.
 
-Estimasi likelihood maksimum (MLE) memaksimalkan fungsi ini pada parameter yang diperbolehkan. Nilainya bukan probabilitas bahwa parameter tersebut benar; integral likelihood terhadap nilai parameter tidak harus satu. Probabilitas posterior Bayesian memerlukan prior tambahan dan normalisasi.
+### Langkah demi langkah: dua pengamatan
 
-Untuk tiga pembacaan sensor rekaan $x=(9,10,14)$ dengan $\sigma=2$ diketahui,
+Misalkan suatu model dengan parameter $\theta$ memberikan tinggi kepadatan 0,5 dan 0,25 untuk dua pengamatan independen pada kandidat $\theta_A$, serta 0,4 dan 0,1 pada kandidat lain $\theta_B$.
 
-$$\ell(\mu)=-3\log(2\sqrt{2\pi})-\frac{(9-\mu)^2+(10-\mu)^2+(14-\mu)^2}{8}.$$
+1. **Baca tinggi kepadatan pada setiap pengamatan.** Setiap tinggi menunjukkan seberapa wajar pengamatan tersebut pada kandidat itu. Tinggi kepadatan bukan probabilitas; satuannya “per satuan $x$” dan nilainya dapat melebihi satu.
+2. **Kalikan tingginya.** Data terdiri atas pengamatan 1 **dan** pengamatan 2. Untuk pengamatan independen, “dan” berarti perkalian, sama seperti $P(A\cap B)=P(A)P(B)$ untuk kejadian independen:
 
-Suku pertama konstan terhadap $\mu$. Karena itu, memaksimalkan $\ell$ meminimalkan jumlah kuadrat jarak, menghasilkan $\hat\mu=\bar x=11$. Pada $\mu=11$, jumlah kuadrat jaraknya 14; pada $\mu=10$, jumlahnya 17. Jadi $\ell(11)-\ell(10)=3/8$, dan $L(11)/L(10)=e^{3/8}\approx1.455$. Ini membandingkan data pengamatan yang sama berdasarkan dua rata-rata dengan satuan dan SD yang sama.
+   $$L(\theta_A)=0.5\times0.25=0.125,\qquad L(\theta_B)=0.4\times0.1=0.04.$$
 
-Ketika kedua parameter model normal iid tidak diketahui, MLE varians membagi kuadrat simpangan dengan $n$. Estimator tak bias membaginya dengan $n-1$. Keduanya mengoptimalkan kriteria berbeda, sehingga tidak ada pertentangan.
+3. **Ambil logaritma natural.** Karena $\ln(ab)=\ln a+\ln b$, hasil kali berubah menjadi jumlah logaritma:
+
+   $$\ell(\theta_A)=\ln0.5+\ln0.25=-0.69315-1.38629=-2.07944,$$
+   $$\ell(\theta_B)=\ln0.4+\ln0.1=-0.91629-2.30259=-3.21888.$$
+
+   Nilai negatif adalah hal yang wajar: logaritma setiap bilangan antara 0 dan 1 bernilai negatif. Log-likelihood bukan probabilitas.
+
+4. **Bandingkan kandidat pada data yang sama.** $\theta_A$ menjelaskan data lebih baik. Rasio likelihood-nya adalah $L(\theta_A)/L(\theta_B)=0.125/0.04=3.125$, dan selisih log-likelihood-nya adalah $-2.07944-(-3.21888)=1.13943=\ln3.125$. Satu nilai likelihood saja, seperti 0,125, tidak bermakna dengan sendirinya; yang bermakna adalah perbandingan antarkandidat.
+
+**Mengapa dikalikan, bukan dijumlahkan?** Penjumlahan digunakan untuk “A **atau** B” dengan hasil yang saling lepas; di sini kedua pengamatan terjadi bersama-sama. Penjumlahan juga gagal mendeteksi kecocokan yang buruk. Tambahkan pengamatan ketiga dengan tinggi 0,001 pada $\theta_A$, yaitu pengamatan yang dijelaskan sangat buruk oleh kandidat tersebut. Hasil kalinya turun dari 0,125 menjadi 0,000125, penurunan seribu kali lipat yang dengan tepat menandai ketidakcocokan. Jumlahnya hampir tidak berubah, dari 0,75 menjadi 0,751. **Jumlah tinggi kepadatan bukan likelihood bersama.**
+
+**Mengapa mengambil logaritma?** Pertama, keamanan numerik: mengalikan 1.000 kepadatan yang lebih kecil dari satu dapat menghasilkan bilangan yang terlalu kecil untuk disimpan komputer, sehingga dibulatkan menjadi nol (**underflow**). Menjumlahkan 1.000 logaritma menghindari hal itu. Kedua, aljabar yang lebih sederhana: logaritma mengubah hasil kali menjadi jumlah dan menghilangkan eksponensial pada kepadatan seperti normal. Karena $\ln$ fungsi naik, parameter yang memaksimalkan $\ell$ juga memaksimalkan $L$.
+
+**Apakah basisnya berpengaruh?** Tidak terhadap kandidat yang unggul. Mengganti basis mengalikan setiap log-likelihood dengan konstanta positif yang sama: $\log_{10}L=\ln L/\ln10=\ln L/2.302585$. Untuk $\theta_A$, $\ln0.125=-2.07944$ sedangkan $\log_{10}0.125=-0.90309$; urutan kandidat tidak berubah. Gunakan $\ln$, karena turunan, uji rasio likelihood, AIC, dan BIC semuanya didefinisikan dengan logaritma natural.
+
+### Contoh lengkap: rata-rata mana yang paling baik menjelaskan tiga pembacaan?
+
+Tiga pembacaan sensor rekaan adalah $x=(9,10,14)$, dimodelkan sebagai $N(\mu,2^2)$ independen dengan $\sigma=2$ diketahui. Datanya tetap; yang kita geser adalah kandidat rata-rata $\mu$. Setiap tinggi kepadatan adalah
+
+$$f(x_i\mid\mu)=\frac{1}{2\sqrt{2\pi}}\exp\!\left[-\frac{(x_i-\mu)^2}{8}\right],\qquad \frac{1}{2\sqrt{2\pi}}\approx0.19947.$$
+
+| Kandidat $\mu$ | $f(9\mid\mu)$ | $f(10\mid\mu)$ | $f(14\mid\mu)$ | Likelihood $L(\mu)$ | Log-likelihood $\ell(\mu)$ | Jumlah tinggi |
+|---:|---:|---:|---:|---:|---:|---:|
+| 10 | 0.17603 | 0.19947 | 0.02700 | 0.000948 | $-6.9613$ | 0.4025 |
+| 11 | 0.12099 | 0.17603 | 0.06476 | 0.001379 | $-6.5863$ | 0.3618 |
+
+![Dua kurva normal dengan rata-rata 10 dan 11, menunjukkan tinggi kepadatan pada setiap pembacaan](figure/likelihood_heights.png)
+
+**Membaca grafik:** ketiga pembacaan, yang ditandai pada sumbu horizontal, sama persis pada kedua panel; hanya kurvanya yang bergeser. Dengan $\mu=10$, pembacaan 9 dan 10 berada dekat puncak, tetapi 14 berada jauh di ekor, dengan tinggi 0,027. Dengan $\mu=11$, dua tinggi pertama sedikit mengecil sementara tinggi pada 14 menjadi lebih dari dua kali lipat. Perkalian tinggi menguntungkan kandidat yang menjelaskan **semua** pengamatan secara wajar, sehingga $\mu=11$ unggul: $L(11)/L(10)=0.001379/0.000948\approx1.455$. Jumlah tinggi justru akan keliru memilih $\mu=10$ (0,4025 dibandingkan 0,3618), karena penjumlahan membiarkan dua titik yang cocok menutupi satu titik yang tidak cocok.
+
+**Temukan $\mu$ terbaik secara aljabar.** Mengambil $\ln$ dari hasil kali menghasilkan
+
+$$\ell(\mu)=-3\ln(2\sqrt{2\pi})-\frac{(9-\mu)^2+(10-\mu)^2+(14-\mu)^2}{8}.$$
+
+Suku pertama tidak bergantung pada $\mu$. Karena itu, memaksimalkan $\ell$ berarti meminimalkan jumlah kuadrat jarak $(9-\mu)^2+(10-\mu)^2+(14-\mu)^2$. Menyamakan turunannya dengan nol, $-2[(9-\mu)+(10-\mu)+(14-\mu)]=0$, menghasilkan $\hat\mu=\bar x=33/3=11$. Pada $\mu=11$ jumlah kuadrat jaraknya $4+1+9=14$; pada $\mu=10$ jumlahnya $1+0+16=17$. Jadi
+
+$$\ell(11)-\ell(10)=\frac{17-14}{8}=\frac38=0.375,\qquad \frac{L(11)}{L(10)}=e^{3/8}\approx1.455,$$
+
+sesuai dengan tabel.
 
 ![Likelihood pembacaan yang sama pada kandidat rata-rata](figure/likelihood.png)
+
+**Membaca grafik:** setiap titik pada kurva mengulang perhitungan tabel untuk satu kandidat rata-rata. Kurva mencapai puncak pada **estimasi likelihood maksimum (MLE)**, $\hat\mu=11$, dan menurun di kedua sisi. Sumbu vertikal dikurangi nilai maksimumnya, sehingga puncaknya berada di nol dan kurva menunjukkan seberapa buruk setiap kandidat lain menjelaskan data yang sama.
+
+**Apa yang bukan MLE.** MLE adalah nilai parameter yang diperbolehkan dan memaksimalkan likelihood. Likelihood bukan probabilitas bahwa suatu parameter benar: likelihood adalah fungsi dari $\theta$ yang integralnya terhadap nilai parameter tidak harus satu. Mengubahnya menjadi probabilitas untuk parameter memerlukan distribusi prior dan normalisasi, seperti dalam analisis Bayesian.
+
+**Catatan tentang varians.** Ketika kedua parameter model normal iid tidak diketahui, MLE varians membagi jumlah kuadrat simpangan dengan $n$, sedangkan estimator tak bias dari Bab 1 membaginya dengan $n-1$. Keduanya menjawab kriteria berbeda, yaitu likelihood maksimum dibandingkan benar secara rata-rata, sehingga tidak ada pertentangan.
 
 <!-- lab: likelihood -->
 

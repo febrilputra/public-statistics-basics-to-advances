@@ -47,6 +47,41 @@ ax.legend()
 save_figure(fig,"likelihood")
 print("Likelihood ratio L(11)/L(10):",np.exp(ll_at_11-ll_at_10))
 print("Normal variance MLE:",readings.var(ddof=0),"; unbiased estimate:",readings.var(ddof=1))
+# Section 7 step-by-step example: multiply heights, then take natural logs.
+heights_A, heights_B = np.array([0.5, 0.25]), np.array([0.4, 0.1])
+assert np.isclose(heights_A.prod(), 0.125) and np.isclose(heights_B.prod(), 0.04)
+assert np.isclose(np.log(heights_A).sum(), np.log(0.125))
+assert np.isclose(np.log(heights_A).sum() - np.log(heights_B).sum(), np.log(3.125))
+assert np.isclose(np.log10(0.125), np.log(0.125) / np.log(10))
+with_bad_point = np.r_[heights_A, 0.001]
+print("Product with a badly fitted third point:", with_bad_point.prod(), "| sum:", with_bad_point.sum())
+
+# Density heights at two candidate means: the readings stay fixed, the curve moves.
+heights_at = {mu: stats.norm.pdf(readings, loc=mu, scale=2) for mu in [10, 11]}
+assert np.isclose(heights_at[11].prod() / heights_at[10].prod(), np.exp(3/8))
+assert heights_at[10].sum() > heights_at[11].sum()  # the sum would pick the wrong mean
+display(pd.DataFrame({mu: {**{f"f({x}|mu)": h for x, h in zip(readings, hs)},
+                           "likelihood": hs.prod(), "log likelihood": np.log(hs).sum(),
+                           "sum of heights": hs.sum()} for mu, hs in heights_at.items()}).T.round(6))
+x_grid = np.linspace(2, 20, 400)
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), sharey=True, layout="constrained")
+for ax, (mu, hs), color in zip(axes, heights_at.items(), [ORANGE, TEAL]):
+    ax.plot(x_grid, stats.norm.pdf(x_grid, mu, 2), color=color, lw=2.2, label=f"N({mu}, 2²) density")
+    ax.vlines(readings, 0, hs, color=PURPLE, lw=2.2)
+    ax.plot(readings, hs, "o", color=PURPLE, ms=7, label="height at each reading")
+    ax.plot(readings, np.zeros(3), "|", color="#334155", ms=16, mew=2)
+    for x, h in zip(readings, hs):
+        left = x == readings.min()  # keep the label for 9 clear of the stem at 10
+        ax.text(x - 0.25 if left else x + 0.25, h + 0.004, f"{h:.4f}", ha="right" if left else "left",
+                va="bottom", fontsize=10, color=PURPLE,
+                bbox=dict(facecolor="white", edgecolor="none", alpha=0.8, pad=1))
+    ax.text(0.02, 0.97, f"L = product = {hs.prod():.6f}\nℓ = ln L = {np.log(hs).sum():.4f}\n"
+            f"sum of heights = {hs.sum():.4f} (not L)", transform=ax.transAxes, va="top", fontsize=10)
+    ax.set(title=f"Candidate mean μ = {mu}", xlabel="Sensor reading", ylim=(0, 0.26), xlim=(2, 20))
+    ax.legend(loc="upper right", fontsize=9, frameon=False)
+axes[0].set_ylabel("Density f(x | μ, σ = 2)")
+fig.suptitle("Same three readings, two candidate means: the likelihood multiplies the heights", fontsize=14)
+save_figure(fig, "likelihood_heights")
 
 # %% practice
 answers = {"binomial_exactly_two":stats.binom.pmf(2,6,.3),

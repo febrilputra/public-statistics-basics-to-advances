@@ -211,24 +211,78 @@ Here $\Gamma$ in the Weibull mean is the gamma function, which extends the facto
 
 ## 7. Probability versus likelihood: what is held fixed?
 
-Probability calculations hold the model parameters fixed and vary possible data. A **likelihood** holds the observed data fixed and varies candidate parameter values. For independent observations,
+Probability and likelihood use the **same formula**, $f(x\mid\theta)$, but read it in opposite directions. A **probability** calculation holds the model parameter $\theta$ fixed and asks about possible data. A **likelihood** holds the observed data fixed and compares candidate parameter values.
+
+| | Probability | Likelihood |
+|---|---|---|
+| Held fixed | Parameter $\theta$ | Observed data $x_1,\ldots,x_n$ |
+| Allowed to vary | Possible data values | Candidate parameter values |
+| Question | “If $\theta$ were true, how likely are these outcomes?” | “Given these data, how well does each $\theta$ explain them?” |
+| Totals one over | All possible data | Not required over $\theta$ |
+
+**Definition.** For independent observations, the **likelihood** of $\theta$ is the product of the density (or, for discrete data, mass) values at the observations. The **log likelihood** is its natural logarithm:
 
 $$L(\theta;x_1,\ldots,x_n)=\prod_{i=1}^n f(x_i\mid\theta),\qquad
-\ell(\theta)=\log L(\theta)=\sum_{i=1}^n\log f(x_i\mid\theta).$$
+\ell(\theta)=\ln L(\theta)=\sum_{i=1}^n\ln f(x_i\mid\theta).$$
 
-For discrete data, use probability masses in place of densities. Products arise from independence. A **sum of density heights is not the joint likelihood** of independent observations. Summing log densities is correct because $\log(ab)=\log a+\log b$. Log likelihood also avoids numerical underflow when multiplying many small values.
+In statistics, “log” without a base means the **natural logarithm** $\ln$, with base $e\approx2.718$. NumPy follows the same convention: `np.log` is $\ln$, and `np.log10` is base 10.
 
-The maximum likelihood estimate (MLE) maximizes this function over allowed parameters. It is not the probability that the parameter is true; a likelihood need not integrate to one over parameter values. Bayesian posterior probabilities require an additional prior and normalization.
+### Step by step: two observations
 
-For three invented sensor readings $x=(9,10,14)$ with known $\sigma=2$,
+Suppose a model with parameter $\theta$ gives two independent observations density heights of 0.5 and 0.25 under a candidate value $\theta_A$, and 0.4 and 0.1 under another candidate $\theta_B$.
 
-$$\ell(\mu)=-3\log(2\sqrt{2\pi})-\frac{(9-\mu)^2+(10-\mu)^2+(14-\mu)^2}{8}.$$
+1. **Read the height at each observation.** Each height says how typical that observation is under the candidate. A height is not a probability; it has units of “per unit of $x$” and can exceed one.
+2. **Multiply the heights.** The data consist of observation 1 **and** observation 2. For independent observations, “and” means multiplication, just as $P(A\cap B)=P(A)P(B)$ for independent events:
 
-The first term is constant in $\mu$. Maximizing $\ell$ therefore minimizes the sum of squared distances, producing $\hat\mu=\bar x=11$. At $\mu=11$, the squared distances sum to 14; at $\mu=10$, they sum to 17. Thus $\ell(11)-\ell(10)=3/8$, and $L(11)/L(10)=e^{3/8}\approx1.455$. This compares the same observed data under two means with the same units and SD.
+   $$L(\theta_A)=0.5\times0.25=0.125,\qquad L(\theta_B)=0.4\times0.1=0.04.$$
 
-When both parameters of an iid normal model are unknown, the MLE of variance divides squared deviations by $n$. The unbiased estimator divides by $n-1$. They optimize different criteria, so there is no contradiction.
+3. **Take the natural log.** Because $\ln(ab)=\ln a+\ln b$, the product becomes a sum of logs:
+
+   $$\ell(\theta_A)=\ln0.5+\ln0.25=-0.69315-1.38629=-2.07944,$$
+   $$\ell(\theta_B)=\ln0.4+\ln0.1=-0.91629-2.30259=-3.21888.$$
+
+   Negative values are normal: the log of any number between 0 and 1 is negative. A log likelihood is not a probability.
+
+4. **Compare candidates on the same data.** $\theta_A$ explains the data better. The likelihood ratio is $L(\theta_A)/L(\theta_B)=0.125/0.04=3.125$, and the log-likelihood difference is $-2.07944-(-3.21888)=1.13943=\ln3.125$. A single likelihood value, such as 0.125, has no meaning on its own; comparisons between candidates do.
+
+**Why multiply instead of add?** Addition is for “A **or** B” with mutually exclusive outcomes; here both observations occur together. A sum also fails to detect a poor fit. Add a third observation with height 0.001 under $\theta_A$, an observation the candidate explains very badly. The product falls from 0.125 to 0.000125, a thousandfold drop that correctly flags the misfit. The sum barely moves, from 0.75 to 0.751. **A sum of density heights is not the joint likelihood.**
+
+**Why take logs?** First, numerical safety: multiplying 1,000 densities smaller than one can produce a number too small for a computer to store, which rounds to zero (**underflow**). Adding 1,000 logs avoids that. Second, simpler algebra: logs turn products into sums and cancel the exponentials in densities such as the normal. Because $\ln$ is increasing, the parameter that maximizes $\ell$ also maximizes $L$.
+
+**Does the base matter?** Not for which candidate wins. Changing the base multiplies every log likelihood by the same positive constant: $\log_{10}L=\ln L/\ln10=\ln L/2.302585$. For $\theta_A$, $\ln0.125=-2.07944$ while $\log_{10}0.125=-0.90309$; the ranking of candidates is unchanged. Use $\ln$, because derivatives, likelihood-ratio tests, AIC, and BIC are all defined with natural logs.
+
+### Worked example: which mean best explains three readings?
+
+Three invented sensor readings are $x=(9,10,14)$, modeled as independent $N(\mu,2^2)$ with known $\sigma=2$. The data stay fixed; we move the candidate mean $\mu$. Each height is
+
+$$f(x_i\mid\mu)=\frac{1}{2\sqrt{2\pi}}\exp\!\left[-\frac{(x_i-\mu)^2}{8}\right],\qquad \frac{1}{2\sqrt{2\pi}}\approx0.19947.$$
+
+| Candidate $\mu$ | $f(9\mid\mu)$ | $f(10\mid\mu)$ | $f(14\mid\mu)$ | Likelihood $L(\mu)$ | Log likelihood $\ell(\mu)$ | Sum of heights |
+|---:|---:|---:|---:|---:|---:|---:|
+| 10 | 0.17603 | 0.19947 | 0.02700 | 0.000948 | $-6.9613$ | 0.4025 |
+| 11 | 0.12099 | 0.17603 | 0.06476 | 0.001379 | $-6.5863$ | 0.3618 |
+
+![Two normal curves with means 10 and 11, showing the density height at each of the three readings](figure/likelihood_heights.png)
+
+**Read the plot:** the three readings, marked on the horizontal axis, are identical in both panels; only the curve moves. With $\mu=10$, readings 9 and 10 sit near the peak, but 14 sits far out in the tail, with height 0.027. With $\mu=11$, the first two heights shrink slightly while the height at 14 more than doubles. Multiplying the heights rewards the candidate that explains **all** observations reasonably, so $\mu=11$ wins: $L(11)/L(10)=0.001379/0.000948\approx1.455$. The sum of heights would wrongly favor $\mu=10$ (0.4025 versus 0.3618), because adding lets two well-fitted points hide one badly fitted point.
+
+**Find the best $\mu$ algebraically.** Taking $\ln$ of the product gives
+
+$$\ell(\mu)=-3\ln(2\sqrt{2\pi})-\frac{(9-\mu)^2+(10-\mu)^2+(14-\mu)^2}{8}.$$
+
+The first term does not depend on $\mu$. Maximizing $\ell$ therefore means minimizing the sum of squared distances $(9-\mu)^2+(10-\mu)^2+(14-\mu)^2$. Setting its derivative to zero, $-2[(9-\mu)+(10-\mu)+(14-\mu)]=0$, gives $\hat\mu=\bar x=33/3=11$. At $\mu=11$ the squared distances sum to $4+1+9=14$; at $\mu=10$ they sum to $1+0+16=17$. Hence
+
+$$\ell(11)-\ell(10)=\frac{17-14}{8}=\frac38=0.375,\qquad \frac{L(11)}{L(10)}=e^{3/8}\approx1.455,$$
+
+matching the table.
 
 ![Likelihood for the same readings under candidate means](figure/likelihood.png)
+
+**Read the plot:** each point on the curve repeats the table calculation for one candidate mean. The curve peaks at the **maximum likelihood estimate (MLE)**, $\hat\mu=11$, and falls on both sides. The vertical axis subtracts the maximum, so the peak is at zero and the curve shows how much worse each other candidate explains the same data.
+
+**What the MLE is not.** The MLE is the allowed parameter value that maximizes the likelihood. A likelihood is not the probability that a parameter is true: it is a function of $\theta$ that need not integrate to one over parameter values. Turning it into probabilities for parameters requires a prior distribution and normalization, as in Bayesian analysis.
+
+**A note on variance.** When both parameters of an iid normal model are unknown, the MLE of the variance divides the sum of squared deviations by $n$, whereas the unbiased estimator from Chapter 1 divides by $n-1$. They answer different criteria, maximum likelihood versus correct on average, so there is no contradiction.
 
 <!-- lab: likelihood -->
 
