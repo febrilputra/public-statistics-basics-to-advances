@@ -56,3 +56,103 @@ answers = {"binomial_exactly_two":stats.binom.pmf(2,6,.3),
            "likelihood":.2*.4,"log_likelihood":np.log(.2)+np.log(.4)}
 display(pd.Series(answers,name="Answer"))
 assert np.isclose(answers["binomial_exactly_two"],.324135)
+
+# %% distribution_catalog
+from scipy.special import gamma as gamma_function
+
+# Check the relationships listed in Section 6.
+assert np.allclose(stats.bernoulli.pmf([0, 1], 0.3), stats.binom.pmf([0, 1], 1, 0.3))
+assert np.allclose(stats.multinomial.pmf(np.eye(3), 1, [0.5, 0.3, 0.2]), [0.5, 0.3, 0.2])
+failures = np.arange(0, 8)
+# SciPy's geom counts trials (1, 2, ...); nbinom counts failures (0, 1, ...).
+assert np.allclose(stats.geom.pmf(failures + 1, 0.4), stats.nbinom.pmf(failures, 1, 0.4))
+t_grid = np.linspace(0.01, 12, 300)
+assert np.allclose(stats.expon.pdf(t_grid, scale=2), stats.gamma.pdf(t_grid, a=1, scale=2))
+assert np.allclose(stats.chi2.pdf(t_grid, 4), stats.gamma.pdf(t_grid, a=4/2, scale=2))
+assert np.allclose(stats.weibull_min.pdf(t_grid, c=1, scale=2), stats.expon.pdf(t_grid, scale=2))
+z = np.linspace(-4, 4, 161)
+t_gap = {nu: np.abs(stats.t.pdf(z, nu) - stats.norm.pdf(z)).max() for nu in [2, 10, 100]}
+assert t_gap[2] > t_gap[10] > t_gap[100]
+print("Largest |t density - normal density|:", {nu: round(float(g), 4) for nu, g in t_gap.items()})
+
+# Check the mean formulas with example parameter values.
+catalog = {
+    "Geometric(p=0.4), trials":            (stats.geom(0.4), 1/0.4),
+    "Negative binomial(r=3, p=0.4)":       (stats.nbinom(3, 0.4), 3*0.6/0.4),
+    "Hypergeometric(N=20, M=5, n=4)":      (stats.hypergeom(M=20, n=5, N=4), 4*5/20),
+    "Discrete uniform(1, ..., 6)":         (stats.randint(1, 7), 3.5),
+    "Beta(2, 5)":                          (stats.beta(2, 5), 2/7),
+    "Gamma(shape 3, scale 2)":             (stats.gamma(a=3, scale=2), 6),
+    "Chi-squared(4)":                      (stats.chi2(4), 4),
+    "Student t(5)":                        (stats.t(5), 0),
+    "F(5, 10)":                            (stats.f(5, 10), 10/8),
+    "Log-normal(mu=0, sigma=0.5)":         (stats.lognorm(s=0.5, scale=np.exp(0)), np.exp(0.5**2/2)),
+    "Weibull(k=2, lambda=3)":              (stats.weibull_min(c=2, scale=3), 3*gamma_function(1 + 1/2)),
+}
+table = pd.DataFrame({name: {"formula mean": formula, "SciPy mean": dist.mean(), "SciPy variance": dist.var()}
+                      for name, (dist, formula) in catalog.items()}).T
+assert np.allclose(table["formula mean"], table["SciPy mean"])
+display(table.round(4))
+
+# Gallery of the additional distributions.
+fig, axes = plt.subplots(4, 4, figsize=(14, 12.5), layout="constrained")
+axes = axes.ravel()
+def stems(ax, x, p, title):
+    ax.bar(x, p, width=0.7, color=TEAL)
+    ax.set(title=title, ylabel="Probability")
+def curves(ax, x, specs, title, loc="best"):
+    for (y, label), color in zip(specs, [PURPLE, ORANGE, TEAL]):
+        ax.plot(x, y, color=color, lw=2, label=label)
+    ax.set(title=title, ylabel="Density")
+    if len(specs) > 1:
+        ax.legend(fontsize=8, frameon=False, loc=loc)
+
+stems(axes[0], [0, 1], stats.bernoulli.pmf([0, 1], 0.3), "Bernoulli(p = 0.3)")
+axes[0].set_xticks([0, 1], ["0: fail", "1: success"])
+axes[1].bar(["red", "green", "blue"], [0.5, 0.3, 0.2], color=TEAL, width=0.7)
+axes[1].set(title="Categorical(0.5, 0.3, 0.2)", ylabel="Probability")
+grid = np.array([[stats.multinomial.pmf([a, b, 4 - a - b], 4, [0.5, 0.3, 0.2]) if a + b <= 4 else np.nan
+                  for b in range(5)] for a in range(5)])
+axes[2].imshow(grid, origin="lower", cmap="Blues")
+axes[2].set(title="Multinomial(n=4; 0.5, 0.3, 0.2)", xlabel="count of green", ylabel="count of red")
+for a in range(5):
+    for b in range(5 - a):
+        axes[2].text(b, a, f"{grid[a, b]:.2f}", ha="center", va="center", fontsize=8,
+                     color="white" if grid[a, b] > 0.09 else "#1E293B")
+k = np.arange(1, 13)
+stems(axes[3], k, stats.geom.pmf(k, 0.4), "Geometric(p = 0.4): trials")
+k = np.arange(0, 16)
+stems(axes[4], k, stats.nbinom.pmf(k, 3, 0.4), "Neg. binomial(r=3, p=0.4): failures")
+k = np.arange(0, 5)
+stems(axes[5], k, stats.hypergeom.pmf(k, 20, 5, 4), "Hypergeometric(N=20, M=5, n=4)")
+k = np.arange(1, 7)
+stems(axes[6], k, stats.randint.pmf(k, 1, 7), "Discrete uniform(1, ..., 6)")
+x01 = np.linspace(0.001, 0.999, 400)
+curves(axes[7], x01, [(stats.beta.pdf(x01, 2, 5), "α=2, β=5"), (stats.beta.pdf(x01, 2, 2), "α=2, β=2"),
+                      (stats.beta.pdf(x01, 0.5, 0.5), "α=β=0.5")], "Beta")
+axes[7].set_ylim(0, 4)
+xpos = np.linspace(0.001, 20, 500)
+curves(axes[8], xpos, [(stats.gamma.pdf(xpos, a=1, scale=2), "shape 1 (exponential)"),
+                       (stats.gamma.pdf(xpos, a=3, scale=2), "shape 3")], "Gamma (scale 2)")
+curves(axes[9], xpos, [(stats.chi2.pdf(xpos, nu), f"ν = {nu}") for nu in [2, 4, 8]], "Chi-squared")
+axes[9].set_ylim(0, 0.5)
+zz = np.linspace(-5, 5, 400)
+curves(axes[10], zz, [(stats.t.pdf(zz, 2), "t, ν = 2"), (stats.t.pdf(zz, 10), "t, ν = 10"),
+                      (stats.norm.pdf(zz), "standard normal")], "Student's t", loc="upper left")
+xf = np.linspace(0.001, 5, 400)
+curves(axes[11], xf, [(stats.f.pdf(xf, 5, 10), "d1 = 5, d2 = 10"), (stats.f.pdf(xf, 2, 20), "d1 = 2, d2 = 20")], "F")
+xl = np.linspace(0.001, 5, 400)
+curves(axes[12], xl, [(stats.lognorm.pdf(xl, s=0.5), "μ = 0, σ = 0.5"), (stats.lognorm.pdf(xl, s=1), "μ = 0, σ = 1")],
+       "Log-normal")
+xw = np.linspace(0.001, 8, 400)
+curves(axes[13], xw, [(stats.weibull_min.pdf(xw, c=0.8, scale=3), "k = 0.8"),
+                      (stats.weibull_min.pdf(xw, c=1, scale=3), "k = 1 (exponential)"),
+                      (stats.weibull_min.pdf(xw, c=2.5, scale=3), "k = 2.5")], "Weibull (λ = 3)")
+axes[13].set_ylim(0, 0.6)
+for ax in axes[14:]:
+    ax.axis("off")
+axes[14].text(0, 0.75, "Teal bars: discrete masses\n(add them for probabilities)\n\n"
+              "Curves: continuous densities\n(probability = area under the curve)",
+              fontsize=11, va="top", transform=axes[14].transAxes)
+fig.suptitle("Additional probability distributions: typical shapes", fontsize=16)
+save_figure(fig, "distribution_gallery")
