@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="515" viewBox="0 0 1000 515" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222222"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="500.0" y="32.0" font-size="20" fill="#222222" text-anchor="middle" font-weight="bold">What r measures, and three ways to misread it</text>
+<text x="500.0" y="54.0" font-size="13" fill="#555555" text-anchor="middle">r measures how tightly the points hug a straight line. Each r below is computed from the plotted points.</text>
+<text x="170.0" y="96.0" font-size="14.5" fill="#222222" text-anchor="middle" font-weight="bold">1. Steep ≠ strong</text>
+<text x="170.0" y="114.0" font-size="12" fill="#555555" text-anchor="middle">r is about tightness, not slope</text>
+<line x1="55.0" y1="345.0" x2="305.0" y2="345.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="55.0" y1="345.0" x2="55.0" y2="135.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="55.0" y1="345.0" x2="55.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="55.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">0</text>
+<line x1="138.3" y1="345.0" x2="138.3" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="138.3" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">3</text>
+<line x1="221.7" y1="345.0" x2="221.7" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="221.7" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">6</text>
+<line x1="305.0" y1="345.0" x2="305.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="305.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">9</text>
+<line x1="51.0" y1="345.0" x2="55.0" y2="345.0" stroke="#555555" stroke-width="1"/>
+<text x="48.0" y="349.0" font-size="10.5" fill="#555555" text-anchor="end">0</text>
+<line x1="51.0" y1="270.0" x2="55.0" y2="270.0" stroke="#555555" stroke-width="1"/>
+<text x="48.0" y="274.0" font-size="10.5" fill="#555555" text-anchor="end">10</text>
+<line x1="51.0" y1="195.0" x2="55.0" y2="195.0" stroke="#555555" stroke-width="1"/>
+<text x="48.0" y="199.0" font-size="10.5" fill="#555555" text-anchor="end">20</text>
+<text x="180.0" y="376.0" font-size="11" fill="#555555" text-anchor="middle">x</text>
+<line x1="68.9" y1="333.8" x2="299.4" y2="147.0" stroke="#D55E00" stroke-width="1.6" stroke-dasharray="5 3"/>
+<line x1="63.3" y1="313.2" x2="299.4" y2="275.8" stroke="#0072B2" stroke-width="1.6" stroke-dasharray="5 3"/>
+<circle cx="82.8" cy="300.0" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="110.6" cy="330.0" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="138.3" cy="262.5" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="166.1" cy="277.5" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="193.9" cy="202.5" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="221.7" cy="225.0" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="249.4" cy="210.0" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="277.2" cy="142.5" r="5" fill="#D55E00" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="82.8" cy="309.0" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="110.6" cy="307.5" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="138.3" cy="300.8" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="166.1" cy="297.8" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="193.9" cy="291.0" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="221.7" cy="289.1" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="249.4" cy="282.8" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="277.2" cy="279.8" r="5" fill="#0072B2" stroke="#ffffff" stroke-width="1.5"/>
+<text x="66.1" y="150.0" font-size="12" fill="#D55E00" text-anchor="start" font-weight="bold">steep, scattered: r = 0.91</text>
+<text x="143.9" y="336.0" font-size="12" fill="#0072B2" text-anchor="start" font-weight="bold">flat, tight: r = 0.99</text>
+<text x="500.0" y="96.0" font-size="14.5" fill="#222222" text-anchor="middle" font-weight="bold">2. r ≈ 0 ≠ "no relationship"</text>
+<text x="500.0" y="114.0" font-size="12" fill="#555555" text-anchor="middle">r only sees straight-line patterns</text>
+<line x1="385.0" y1="345.0" x2="635.0" y2="345.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="385.0" y1="345.0" x2="385.0" y2="135.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="385.0" y1="345.0" x2="385.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="385.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">0</text>
+<line x1="468.3" y1="345.0" x2="468.3" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="468.3" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">3</text>
+<line x1="551.7" y1="345.0" x2="551.7" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="551.7" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">6</text>
+<line x1="635.0" y1="345.0" x2="635.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="635.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">9</text>
+<line x1="381.0" y1="345.0" x2="385.0" y2="345.0" stroke="#555555" stroke-width="1"/>
+<text x="378.0" y="349.0" font-size="10.5" fill="#555555" text-anchor="end">0</text>
+<line x1="381.0" y1="270.0" x2="385.0" y2="270.0" stroke="#555555" stroke-width="1"/>
+<text x="378.0" y="274.0" font-size="10.5" fill="#555555" text-anchor="end">5</text>
+<line x1="381.0" y1="195.0" x2="385.0" y2="195.0" stroke="#555555" stroke-width="1"/>
+<text x="378.0" y="199.0" font-size="10.5" fill="#555555" text-anchor="end">10</text>
+<text x="510.0" y="376.0" font-size="11" fill="#555555" text-anchor="middle">x</text>
+<polyline points="410.0,150.6 412.0,158.3 414.0,165.8 416.0,173.2 418.0,180.5 420.0,187.5 422.0,194.5 424.0,201.2 426.0,207.8 428.0,214.3 430.0,220.6 432.0,226.7 434.0,232.7 436.0,238.5 438.0,244.2 440.0,249.7 442.0,255.1 444.0,260.3 446.0,265.4 448.0,270.3 450.0,275.0 452.0,279.6 454.0,284.0 456.0,288.3 458.0,292.4 460.0,296.4 462.0,300.2 464.0,303.9 466.0,307.4 468.0,310.7 470.0,313.9 472.0,316.9 474.0,319.8 476.0,322.5 478.0,325.1 480.0,327.5 482.0,329.8 484.0,331.9 486.0,333.8 488.0,335.6 490.0,337.2 492.0,338.7 494.0,340.0 496.0,341.2 498.0,342.2 500.0,343.1 502.0,343.8 504.0,344.3 506.0,344.7 508.0,344.9 510.0,345.0 512.0,344.9 514.0,344.7 516.0,344.3 518.0,343.8 520.0,343.1 522.0,342.2 524.0,341.2 526.0,340.0 528.0,338.7 530.0,337.2 532.0,335.6 534.0,333.8 536.0,331.9 538.0,329.8 540.0,327.5 542.0,325.1 544.0,322.5 546.0,319.8 548.0,316.9 550.0,313.9 552.0,310.7 554.0,307.4 556.0,303.9 558.0,300.2 560.0,296.4 562.0,292.4 564.0,288.3 566.0,284.0 568.0,279.6 570.0,275.0 572.0,270.3 574.0,265.4 576.0,260.3 578.0,255.1 580.0,249.7 582.0,244.2 584.0,238.5 586.0,232.7 588.0,226.7 590.0,220.6 592.0,214.3 594.0,207.8 596.0,201.2 598.0,194.5 600.0,187.5 602.0,180.5 604.0,173.2 606.0,165.8 608.0,158.3 610.0,150.6" fill="none" stroke="#8E44AD" stroke-width="1.4" stroke-dasharray="4 3"/>
+<circle cx="412.8" cy="161.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="440.6" cy="251.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="468.3" cy="311.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="496.1" cy="341.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="523.9" cy="341.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="551.7" cy="311.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="579.4" cy="251.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="607.2" cy="161.2" r="5" fill="#8E44AD" stroke="#ffffff" stroke-width="1.5"/>
+<text x="500.0" y="162.0" font-size="12.5" fill="#8E44AD" text-anchor="middle" font-weight="bold">perfect curve, but r = 0.00</text>
+<text x="830.0" y="96.0" font-size="14.5" fill="#222222" text-anchor="middle" font-weight="bold">3. One outlier can change r a lot</text>
+<text x="830.0" y="114.0" font-size="12" fill="#555555" text-anchor="middle">always look at the scatter plot</text>
+<line x1="715.0" y1="345.0" x2="965.0" y2="345.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="715.0" y1="345.0" x2="715.0" y2="135.0" stroke="#555555" stroke-width="1.3"/>
+<line x1="715.0" y1="345.0" x2="715.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="715.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">0</text>
+<line x1="798.3" y1="345.0" x2="798.3" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="798.3" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">3</text>
+<line x1="881.7" y1="345.0" x2="881.7" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="881.7" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">6</text>
+<line x1="965.0" y1="345.0" x2="965.0" y2="349.0" stroke="#555555" stroke-width="1"/>
+<text x="965.0" y="361.0" font-size="10.5" fill="#555555" text-anchor="middle">9</text>
+<line x1="711.0" y1="345.0" x2="715.0" y2="345.0" stroke="#555555" stroke-width="1"/>
+<text x="708.0" y="349.0" font-size="10.5" fill="#555555" text-anchor="end">0</text>
+<line x1="711.0" y1="275.0" x2="715.0" y2="275.0" stroke="#555555" stroke-width="1"/>
+<text x="708.0" y="279.0" font-size="10.5" fill="#555555" text-anchor="end">4</text>
+<line x1="711.0" y1="205.0" x2="715.0" y2="205.0" stroke="#555555" stroke-width="1"/>
+<text x="708.0" y="209.0" font-size="10.5" fill="#555555" text-anchor="end">8</text>
+<line x1="711.0" y1="135.0" x2="715.0" y2="135.0" stroke="#555555" stroke-width="1"/>
+<text x="708.0" y="139.0" font-size="10.5" fill="#555555" text-anchor="end">12</text>
+<text x="840.0" y="376.0" font-size="11" fill="#555555" text-anchor="middle">x</text>
+<circle cx="742.8" cy="287.2" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="770.6" cy="278.5" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="798.3" cy="254.0" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="826.1" cy="245.2" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="853.9" cy="220.8" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="881.7" cy="206.8" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="909.4" cy="182.2" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="937.2" cy="173.5" r="5" fill="#1F4E79" stroke="#ffffff" stroke-width="1.5"/>
+<circle cx="937.2" cy="327.5" r="7" fill="#C0392B" stroke="#ffffff" stroke-width="1.5"/>
+<text x="929.2" y="331.5" font-size="11.5" fill="#C0392B" text-anchor="end" font-weight="bold">outlier</text>
+<text x="726.1" y="147.2" font-size="12" fill="#1F4E79" text-anchor="start" font-weight="bold">without it: r = 0.995</text>
+<text x="726.1" y="171.8" font-size="12" fill="#C0392B" text-anchor="start" font-weight="bold">with it: r = 0.40</text>
+<line x1="335.0" y1="85.0" x2="335.0" y2="385.0" stroke="#E1E4E8" stroke-width="1"/>
+<line x1="665.0" y1="85.0" x2="665.0" y2="385.0" stroke="#E1E4E8" stroke-width="1"/>
+<rect x="60.0" y="400.0" width="880.0" height="100.0" rx="8" fill="#FFFFFF" stroke="#222222" stroke-width="1.5"/>
+<text x="500.0" y="426.0" font-size="13" fill="#222222" text-anchor="middle" font-weight="bold">r² = the share of the variation in y that the line explains</text>
+<text x="500.0" y="450.0" font-size="12.5" fill="#555555" text-anchor="middle">Lesson example: r = 0.998, so r² ≈ 0.996. The line explains about 99.6% of the ups and downs in y.</text>
+<text x="500.0" y="474.0" font-size="12.5" fill="#555555" text-anchor="middle">And always: correlation is not causation. A strong r says the variables move together, not why.</text>
+</svg>

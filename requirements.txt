@@ -1,10 +1,5 @@
-# Tested with Python 3.12. Install in a virtual environment.
+# Tested with Python 3.12. Needed only to regenerate the chapter 14-18 figures
+# (python NN_chapter/figures/make_figures.py) and to run scripts/check_links.py.
 numpy==2.5.3
 scipy==1.18.1
 matplotlib==3.11.2
-pandas==3.0.6
-statsmodels==0.15.0
-nbformat==5.11.1
-nbclient==0.11.0
-ipykernel==7.4.0
-jupyterlab==4.6.4

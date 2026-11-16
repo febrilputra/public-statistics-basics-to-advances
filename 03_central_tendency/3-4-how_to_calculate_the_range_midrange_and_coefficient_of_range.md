@@ -1,0 +1,41 @@
+# Lesson 3.4 - How to Calculate the Range, Midrange, and Coefficient of Range
+
+> **Video:** [How To Calculate the Range, MidRange, and Coefficient of Range](https://www.youtube.com/watch?v=Ajg0Z7wXZRI) by The Organic Chemistry Tutor
+> **Chapter:** [3 - Central Tendency](https://www.video-tutor.net/central-tendency-and-variation.html)
+
+## Formulas
+
+Let $H$ = highest value and $L$ = lowest value.
+
+| Quantity | Formula | Meaning |
+|---|---|---|
+| **Range** | $H - L$ | Total spread of the data |
+| **Midrange** | $\dfrac{H + L}{2}$ | Halfway point between the extremes |
+| **Coefficient of range** (CR) | $\dfrac{H - L}{H + L}$ | Range relative to the size of the values (no units) |
+
+---
+
+## Example
+
+In the given data set, the lowest value is $L = 5$ and the highest is $H = 45$.
+
+**(a) Range**
+$$\text{range} = H - L = 45 - 5 = 40$$
+
+**(b) Midrange**
+$$\text{midrange} = \frac{H + L}{2} = \frac{45 + 5}{2} = \frac{50}{2} = 25$$
+
+**(c) Coefficient of range**
+$$\text{CR} = \frac{H - L}{H + L} = \frac{45 - 5}{45 + 5} = \frac{40}{50} = \frac{4}{5} = 0.8$$
+
+![Number line showing the lowest and highest values, the range and the midrange](figures/range_midrange.png)
+
+All three measures come from just the two extreme values: the range is the distance between them, the midrange is the point halfway between them, and the coefficient of range compares the range with their sum.
+
+---
+
+## Key takeaways
+
+- All three use only the **highest** and **lowest** values, so they are sensitive to outliers.
+- The midrange is a measure of center. The range and coefficient of range are measures of spread.
+- The coefficient of range has no units, so it can compare the spread of data sets measured on different scales.

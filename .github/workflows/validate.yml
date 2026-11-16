@@ -1,4 +1,4 @@
-name: Validate statistics course
+name: Check notes and figures
 
 on:
   push:
@@ -9,9 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  notebooks:
+  notes:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,7 +20,7 @@ jobs:
           cache: pip
       - name: Install pinned dependencies
         run: python -m pip install -r requirements.txt
-      - name: Build notebooks from their authored sources
-        run: python scripts/build_notebooks.py
-      - name: Execute every notebook and validate the course
-        run: python scripts/validate_course.py --execute
+      - name: Regenerate the chapter 14-18 figures
+        run: for f in 1[4-8]_*/figures/make_figures.py; do python "$f"; done
+      - name: Check local links and figures
+        run: python scripts/check_links.py
